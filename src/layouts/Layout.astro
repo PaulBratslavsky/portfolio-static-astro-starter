@@ -1,0 +1,103 @@
+---
+import "../styles/global.css";
+import "../styles/responsive.css";
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global></style>
+
+<script>
+  function handleMobileMenuToggle(btnId: string, navId: string) {
+    const toggleNavButton = document.getElementById(btnId);
+    const mobileMenu = document.getElementById(navId);
+
+    function handleToggleMenu() {
+      mobileMenu.classList.toggle("show");
+      toggleNavButton.classList.toggle("rotate");
+    }
+
+    toggleNavButton.addEventListener("click", handleToggleMenu);
+  }
+
+  function handleCloseMenuOnClick(
+    navId: string,
+    mobileNavId: string,
+    btnId: string
+  ) {
+    const mobileMenuItems = document.getElementById(mobileNavId);
+    const toggleNavButton = document.getElementById(btnId);
+    const mobileMenu = document.getElementById(navId);
+
+    function handleClick(e) {
+      console.log(e.target);
+      mobileMenu.classList.remove("show");
+      toggleNavButton.classList.remove("rotate");
+    }
+
+    mobileMenuItems.addEventListener("click", handleClick);
+  }
+
+  /*****************************************************
+  NAV ON SCROLL BEHAVIOR
+*****************************************************/
+  function handleOnMenuScroll(navId: string) {
+    const nav = document.getElementById(navId);
+    // Setup isScrolling variable
+    var isScrolling: number;
+
+    window.addEventListener("scroll", applyNavStyles);
+
+    function applyNavStyles() {
+      if (nav) {
+        nav.classList.add("nav-active");
+        // Clear our timeout throughout the scroll
+        window.clearTimeout(isScrolling);
+        // Tigger timeout on scroll end
+        isScrolling = setTimeout(function () {
+          nav.classList.remove("nav-active");
+        }, 700);
+      }
+    }
+  }
+
+  /*****************************************************
+  SCROLL TO THE TOP FUNCTION
+*****************************************************/
+
+  function backToTop(elementSelector: string) {
+    const node = document.querySelector(elementSelector);
+    if (node) node.addEventListener("click", () => window.scrollTo(0, 0));
+  }
+
+  handleOnMenuScroll("header");
+  handleMobileMenuToggle("toggleNavButton", "mobileMenu");
+  handleCloseMenuOnClick("mobileMenu", "mobile-nav", "toggleNavButton");
+  backToTop("#backtothetop");
+</script>
