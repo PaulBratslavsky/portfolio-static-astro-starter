@@ -1,0 +1,14 @@
+<button id="backtothetop" class="button"><i class="fas fa-angle-up"></i></button
+>
+
+<script>
+  /*****************************************************
+  SCROLL TO THE TOP FUNCTION
+*****************************************************/
+  function backToTop(elementSelector: string) {
+    const node = document.querySelector(elementSelector);
+    if (node) node.addEventListener("click", () => window.scrollTo(0, 0));
+  }
+
+  backToTop("#backtothetop");
+</script>
